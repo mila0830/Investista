@@ -16,6 +16,7 @@ print(all_data["metric"]["epsTTM"])
 print(price)
 
 msft=yf.Ticker("APPL")
+
 #print(msft.cashflow)
 #print(msft.info['currentPrice'])
 
@@ -31,3 +32,8 @@ second_half_prices=scrape_p("https://markets.businessinsider.com/index/component
 
 print(len(first_half_prices))
 print(len(second_half_prices))
+
+for symb in first_half_symbols:
+    print(symb)
+
+print(msft)

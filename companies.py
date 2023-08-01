@@ -23,6 +23,7 @@ def scrape(url):
 
         # Find the table element that has the class "table instruments"
         table = soup.find("table", class_="table table__layout--fixed")
+        print(table)
        
 
         # Find all the table rows that have the class "table__row"
@@ -108,6 +109,6 @@ def scrape_p(url):
     else:
         # Print an error message if the request failed
         print("Error: sight doesn't work for scraping")
-
-
+scrape(url)
+print(symbols)
 
