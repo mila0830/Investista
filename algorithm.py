@@ -1,21 +1,21 @@
 import finnhub
 import pandas as pd
 import yfinance as yf
-from companies import scrape
-from companies import scrape_p
 
-finnhub_client = finnhub.Client(api_key="cj1em1hr01qhv0uhof90cj1em1hr01qhv0uhof9g")
+
+finnhub_client = finnhub.Client(api_key="cj4qb51r01qq6hgdoaogcj4qb51r01qq6hgdoap0")
 
 
 
 #print(finnhub_client.general_news('general', min_id=0))
-all_data = finnhub_client.company_basic_financials('PEP', 'all')
+#all_data = finnhub_client.company_basic_financials('PEP', 'all')
 price = finnhub_client.quote('APPL')
-
-print(all_data["metric"]["epsTTM"])
 print(price)
 
-msft=yf.Ticker("APPL")
+
+appl=yf.Ticker("MSFT")
+print(appl.info['sharesOutstanding'])
+
 
 #print(msft.cashflow)
 #print(msft.info['currentPrice'])
@@ -24,16 +24,11 @@ msft=yf.Ticker("APPL")
 url = "https://markets.businessinsider.com/index/components/nasdaq_100"
 url2="https://markets.businessinsider.com/index/components/nasdaq_100?p=2"
 
-first_half_symbols=scrape("https://markets.businessinsider.com/index/components/nasdaq_100")
-second_half_symbols=scrape("https://markets.businessinsider.com/index/components/nasdaq_100?p=2")
+symbols=[]
 
-first_half_prices=scrape_p("https://markets.businessinsider.com/index/components/nasdaq_100")
-second_half_prices=scrape_p("https://markets.businessinsider.com/index/components/nasdaq_100?p=2")
 
-print(len(first_half_prices))
-print(len(second_half_prices))
-
-for symb in first_half_symbols:
+print("START---------------------------------")
+for symb in symbols:
     print(symb)
-
-print(msft)
+    tick=yf.Ticker(symb)
+    print(tick.info['sharesOutstanding']) 

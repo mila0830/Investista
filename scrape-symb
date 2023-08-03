@@ -5,11 +5,15 @@ from bs4 import BeautifulSoup
 
 from selenium import webdriver
 
+from selenium.webdriver.common.by import By
+
 from selenium.webdriver.chrome.service import Service
 
 from selenium.webdriver.support.ui import WebDriverWait
 
 from webdriver_manager.chrome import ChromeDriverManager
+
+from selenium.webdriver.support import expected_conditions as EC
 
 import time
 
@@ -81,7 +85,35 @@ def scrape_p(url):
     
     return price_final
 
+"""
+def scrape_weight(url):
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--ignore-certifiate-errors')
+    chrome_options.add_argument('--ignore-ssl-errors')
 
+    chrome_path= r"C:\Desktop\chromedriver.exe"
+    service = Service(executable_path=chrome_path)
+    driver = webdriver.Chrome(service=service, options=chrome_options)
+    driver.get(url)
 
-print(scrape_p(url))
+    #WebDriverWait(driver,20).until(EC.invisibility_of_element((By.XPATH,'./html/body/div[3]/div/main/div[2]/article/div[3]/div[1]/div/div/div[3]/div[2]/div[2]/div/button')))
+    #WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, './html/body/div[3]/div/main/div[2]/article/div[3]/div[1]/div/div/div[3]/div[2]/div[2]/div/button'))).click()
 
+    WebDriverWait(driver,20)
+    time.sleep(10)
+
+    cookies=driver.find_element(By.ID, "onetrust-accept-btn-handler")
+    cookies.click()
+
+    button=driver.find_element(By.CLASS_NAME, "nasdaq-screener__form-button--download")
+    button.click()
+    time.sleep(20)
+
+    #button=driver.find_element(By.XPATH,'./html/body/div[3]/div/main/div[2]/article/div[3]/div[1]/div/div/div[3]/div[2]/div[2]/div/button')
+    #button.click()
+scrape_weight("https://www.nasdaq.com/market-activity/stocks/screener")
+#print(scrape_weight("https://www.slickcharts.com/nasdaq100"))
+print(scrape_symb(url))
+
+"""
+print(scrape_symb(url))
