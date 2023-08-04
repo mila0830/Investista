@@ -51,7 +51,13 @@ def scrape_symb(url):
 
     #check if dublicates in list
     return symbols_final
-
+def is_float(s):
+    locale.setlocale(locale.LC_ALL, '')
+    try:
+        locale.atof(s)
+        return True
+    except ValueError:
+        return False
 
 def scrape_p(url):
     chrome_options = webdriver.ChromeOptions()
@@ -71,6 +77,7 @@ def scrape_p(url):
     soup = BeautifulSoup(driver.page_source, features = "lxml")
     rows = soup.select(selector=".BasicTable-unchanged.BasicTable-numData")
     
+    
     price_final=[]
 
     #could try this instead of all the locale stuff
@@ -79,11 +86,16 @@ def scrape_p(url):
     locale.setlocale(locale.LC_ALL, '')
 
     for row in rows:
-        price_final.append(locale.atof(row.getText()))
-
-    #check if dublicates in list
+        temp= row.getText()
+        if is_float(temp):
+            price_final.append(locale.atof(temp))
+        #print(row)
+        # print(row.getText())
     
+
     return price_final
+
+
 
 """
 def scrape_weight(url):
@@ -116,4 +128,4 @@ scrape_weight("https://www.nasdaq.com/market-activity/stocks/screener")
 print(scrape_symb(url))
 
 """
-print(scrape_symb(url))
+
