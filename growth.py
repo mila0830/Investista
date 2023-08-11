@@ -76,7 +76,7 @@ def growth_annum(symbols):
                 eps_growth[symbols[i]] = val
                 print(val)
         counter+=1 
-    return eps_growth
+    return eps_growth, no_growth_num
 
 def no_growth(symbols):
     finnhub_client = finnhub.Client(api_key="cj4qb51r01qq6hgdoaogcj4qb51r01qq6hgdoap0")

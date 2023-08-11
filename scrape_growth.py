@@ -15,6 +15,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 from selenium.webdriver.support import expected_conditions as EC
 
+from scrapesymb import is_float
+
 import time
 
 import locale
@@ -67,34 +69,30 @@ def scrape_growth(companies):
 
             #retrieve just the annual growth for next 5 years 
             if counter == 34:
+                val = row[1]
+                val = val.replace('%','')
+
+                locale.setlocale(locale.LC_ALL, '')
+
                 #add that value to the data array
-                data[c]= (row[1])
-                print(row[1])
+                if val != 'N/A':
+                    val2= locale.atof(val)
+                    val3 = (val2/100 + 1)
+                    data[c]=val3
+
+                else:
+                    data[c] = 1
+                
 
             #add to the counter
             counter +=1
-    print(data)
+    
     return data
 
 
-    #soup = BeautifulSoup(driver.page_source, features = "lxml")
-    #rows = soup.select(selector=".BasicTable-symbolName")
-    
-    """
-    # Create a BeautifulSoup object from the response text
-    soup = BeautifulSoup(driver.page_source, features = "lxml")
-    rows = soup.select(selector=".BasicTable-symbolName")
-    symbols_final=[]
-    for row in rows:
-        symbols_final.append(row.getText())
-    """
-"""
-for c in companies:
-    url = "https://finance.yahoo.com/quote/{0}/analysis?p={0}".format(c)
-    scrape_growth(url, c)
-"""
 
-scrape_growth(companies)
+
+
 
 
 """

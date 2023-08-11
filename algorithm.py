@@ -6,6 +6,7 @@ from scrapesymb import scrape_p
 from scrape_growth import scrape_growth
 from growth import growth_annum
 from growth import no_growth
+from scrapesymb import is_float
 import finnhub
 import time
 from yahoofinancials import YahooFinancials
@@ -27,7 +28,7 @@ total_market_cap=0
 
 #array to hold all companies market capitalization
 market_caps=[]
-print(symbols)
+
 #itarate through each symbol
 for symb in symbols:
     
@@ -61,8 +62,8 @@ counter=0
 #variable holds total earnings
 total_earnings=0
 
-#have an array hold the earnings for each company
-earnings_per_company=[]
+#have a dict hold the earnings for each company
+earnings_per_company={}
 
 #iterate through the companies of the Nasdaq 100
 for i in range(len(symbols)):
@@ -82,7 +83,7 @@ for i in range(len(symbols)):
     earnings = outstanding_shares[i] * eps
 
     #add the earnings of each company to the list 
-    earnings_per_company.append(earnings)
+    earnings_per_company[symbols[i]]= earnings
 
     #add up the earnings in to a total earnings
     total_earnings += earnings
@@ -107,28 +108,20 @@ price_per_earnings = total_market_cap / total_earnings
 
 #finding future growth rates
 
-growth_dict = growth_annum(symbols)
+growth_dict, companies = growth_annum(symbols)
 
-companies= no_growth(symbols)
 
 print(growth_dict)
 print(companies)
+
 #the url for the annual growth
 url = "https://finance.yahoo.com/quote/{0}/analysis?p={0}"
 
-#iterate through the list of companies that you don't already have 5y growth 
-for c in companies:
-    url = "https://finance.yahoo.com/quote/{0}/analysis?p={0}".format(c)
-    scrape_growth(url)
+additional_dict= scrape_growth(companies)
 
-#earnings next year
-"""
-earnings_next_year_total=0
-for i in range(len(symbols)):
-    temp = earnings_per_company[i] * (1 + (eps_growth[i]/100))
-    earnings_next_year_total +=temp
+final_dict= growth_dict | additional_dict
 
-price_growth_index= ((earnings_next_year_total / total_earnings) -1) * 100
+print(final_dict)
+print(len(final_dict))
 
-print(price_growth_index)
-"""
+
