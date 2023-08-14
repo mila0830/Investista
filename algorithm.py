@@ -117,11 +117,38 @@ print(companies)
 #the url for the annual growth
 url = "https://finance.yahoo.com/quote/{0}/analysis?p={0}"
 
+#get the growth from the companies using data scraping becuse not available in API
 additional_dict= scrape_growth(companies)
 
-final_dict= growth_dict | additional_dict
+#merge the two dictionaries
+final_growth_dict= growth_dict | additional_dict
 
-print(final_dict)
-print(len(final_dict))
+print(final_growth_dict)
+
+#form a dictionary of all the predicted earnings per company 
+predicted_earnings_per_company = {}
+
+#add up all the predicted total earnings per company
+total_predicted_earnings_per_company = 0
+
+#iterate through all the companies
+for key in final_growth_dict:
+    #calculate the predicted earnings for each company using the growth rates
+    value= final_growth_dict[key] * earnings_per_company[key]
+    #add that value to the dictionary 
+    predicted_earnings_per_company[key] = value
+    #add this to the total value of all the predicted earnings
+    total_predicted_earnings_per_company += value
+
+growth = total_predicted_earnings_per_company / total_earnings
+
+#calculate the Benjamin Graham formula
+ben_graham_number = 0 
+
+
+
+    
+
+
 
 
