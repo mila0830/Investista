@@ -44,6 +44,7 @@ for symb in symbols:
     #add the market capitalization for each company to the total
     total_market_cap+= market_cap
 
+
 #have an array hold the number of outstanding shares
 outstanding_shares = []
 
@@ -94,25 +95,13 @@ for i in range(len(symbols)):
 #let the API sleep for 15 seconds
 time.sleep(15)
 
-
-
-print(total_earnings)
-print(total_market_cap)
-print(outstanding_shares)
-print(earnings_per_company)
-
 #calculate the price/earnings for the Nasdaq 100
 price_per_earnings = total_market_cap / total_earnings
-
-
 
 #finding future growth rates
 
 growth_dict, companies = growth_annum(symbols)
 
-
-print(growth_dict)
-print(companies)
 
 #the url for the annual growth
 url = "https://finance.yahoo.com/quote/{0}/analysis?p={0}"
@@ -123,7 +112,6 @@ additional_dict= scrape_growth(companies)
 #merge the two dictionaries
 final_growth_dict= growth_dict | additional_dict
 
-print(final_growth_dict)
 
 #form a dictionary of all the predicted earnings per company 
 predicted_earnings_per_company = {}
@@ -140,10 +128,35 @@ for key in final_growth_dict:
     #add this to the total value of all the predicted earnings
     total_predicted_earnings_per_company += value
 
-growth = total_predicted_earnings_per_company / total_earnings
+#calculate the growth rate
+growth = ((total_predicted_earnings_per_company / total_earnings) -1 ) * 100
+
+#calculate the price/earnings/growth 
+peg = price_per_earnings / growth
+
+#form a ticker to grab the 10-year Treasury Bond Yield
+tick=yf.Ticker('^TNX')
+
+#get the value 
+treasury_yield= tick.info['previousClose']
 
 #calculate the Benjamin Graham formula
-ben_graham_number = 0 
+ben_graham_number = (total_earnings * (8.5 + 2 * growth) * 4.4 ) / treasury_yield
+
+#state if profitable if ben graham number is above current years market cap
+if (ben_graham_number > total_market_cap):
+    print("Invest today!")
+    print("Today's price per earnings: " + str(price_per_earnings))
+    print("Predicted price per earnings: " + str(total_predicted_earnings_per_company))
+    print("Growth rate: " + str(growth))
+    print("PEG: " + str(peg))
+#state it isn't profitable to invest today if ben graham is less than market capitalization
+else:
+    print("Investment today is not worth it")
+    print("Today's price per earnings: " + str(price_per_earnings))
+    print("Predicted price per earnings: " + str(total_predicted_earnings_per_company))
+    print("Growth rate: " + str(growth))
+    print("PEG: " + str(peg))
 
 
 

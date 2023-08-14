@@ -64,17 +64,18 @@ def growth_annum(symbols):
         if counter == 15:
             time.sleep(20)
             counter=0
-        print(symbols[i])
+        
         value=finnhub_client.company_basic_financials(symbols[i], 'all')
         
         if 'epsGrowth5Y' in value['metric'].keys():
             eps_g= value['metric']['epsGrowth5Y']
+            
             if eps_g == None:
                 no_growth_num.append(symbols[i])
             elif eps_g != None:
-                val= (1 + (eps_g/100)) ** (1/3)
+                val= (1 + (eps_g/100)) ** (1/5)
                 eps_growth[symbols[i]] = val
-                print(val)
+                
         counter+=1 
     return eps_growth, no_growth_num
 
@@ -89,7 +90,7 @@ def no_growth(symbols):
         if counter == 15:
             time.sleep(20)
             counter=0
-        print(symbols[i])
+        
         value=finnhub_client.company_basic_financials(symbols[i], 'all')
         
         if 'epsGrowth5Y' in value['metric'].keys():
