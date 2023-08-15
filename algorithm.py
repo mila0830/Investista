@@ -98,19 +98,12 @@ time.sleep(15)
 #calculate the price/earnings for the Nasdaq 100
 price_per_earnings = total_market_cap / total_earnings
 
-#finding future growth rates
-
-growth_dict, companies = growth_annum(symbols)
-
 
 #the url for the annual growth
 url = "https://finance.yahoo.com/quote/{0}/analysis?p={0}"
 
 #get the growth from the companies using data scraping becuse not available in API
-additional_dict= scrape_growth(companies)
-
-#merge the two dictionaries
-final_growth_dict= growth_dict | additional_dict
+final_growth_dict= scrape_growth(symbols)
 
 
 #form a dictionary of all the predicted earnings per company 
