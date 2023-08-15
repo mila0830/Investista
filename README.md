@@ -8,7 +8,7 @@ The main branch holds the final version of the earning analysis, however, it onl
 
 The YF-Finnhub-Data branch holds the final version of the earning analysis that takes into account a mix of Finnhub and Yahoo Finance's predictions on the EPS 5Y growth. This version runs much faster, but I found that the purely Yahoo Finance data provides more accurate and reliable predictions.
 
-Both versions tend to give the same overall result of if an investment is worth it or not but most financial values are different. I reccomend running the algorithm.py in the main branch.  
+Therefore, I reccomend running the algorithm.py in the main branch.  
 
 Note: Runtime is greatly affected by the need to wait inbetween API calls becuase of not buying premium packages
 
