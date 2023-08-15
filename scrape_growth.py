@@ -21,11 +21,6 @@ import time
 
 import locale
 
-companies = ['ABNB', 'AMD', 'AMZN', 'TEAM', 'ADSK', 'BKR', 'CRWD', 'DDOG', 'DXCM', 'EBAY', 'ENPH', 'ILMN', 'MRVL', 'JD', 'MRNA', 'PANW', 'PDD', 'SGEN', 'TSLA', 'WBD', 'WDAY', 'ZM', 'ZS']
-# Define the URL of the web page that contains the list of NASDAQ 100 companies
-#url = "https://finance.yahoo.com/quote/{0}/analysis?p={0}"
-
-
 #function for scraping the eps annual growth
 def scrape_growth(companies):
     #make an array to hold all data
@@ -89,27 +84,4 @@ def scrape_growth(companies):
     
     return data
 
-
-
-
-
-
-
-"""
-#works but doesn't have growth data
-import requests
-
-url = "https://yfapi.net/v6/finance/quote"
-
-querystring = {"symbols":"AAPL,BTC-USD,EURUSD=X"}
-
-headers = {
-    'x-api-key': "oUwiBK6MSP8uvPfnJ5wFH8LyRBGmC3Wq3d6H6AGb"
-    }
-
-response = requests.request("GET", url, headers=headers, params=querystring)
-
-print(response.text)
-
-"""
 

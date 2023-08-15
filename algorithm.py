@@ -5,8 +5,6 @@ from scrapesymb import scrape_symb
 from scrapesymb import scrape_p
 from scrape_growth import scrape_growth
 from growth import growth_annum
-from growth import no_growth
-from scrapesymb import is_float
 import finnhub
 import time
 from yahoofinancials import YahooFinancials
@@ -102,15 +100,20 @@ price_per_earnings = total_market_cap / total_earnings
 #the url for the annual growth
 url = "https://finance.yahoo.com/quote/{0}/analysis?p={0}"
 
-#get the growth from the companies using data scraping becuse not available in API
-final_growth_dict= scrape_growth(symbols)
+#use Finnhub API to gather the eps 5Y growth and store the companies that there is no data for
+growth_dict, no_growth_companies = growth_annum(symbols)
 
+#get the growth from the companies using data scraping becuse not available in API
+additional_growth_dict= scrape_growth(no_growth_companies)
+
+#merge the two dictionaries holding growth together 
+final_growth_dict = growth_dict | additional_growth_dict
 
 #form a dictionary of all the predicted earnings per company 
 predicted_earnings_per_company = {}
 
 #add up all the predicted total earnings per company
-total_predicted_earnings_per_company = 0
+total_predicted_earnings = 0
 
 #iterate through all the companies
 for key in final_growth_dict:
@@ -119,10 +122,10 @@ for key in final_growth_dict:
     #add that value to the dictionary 
     predicted_earnings_per_company[key] = value
     #add this to the total value of all the predicted earnings
-    total_predicted_earnings_per_company += value
+    total_predicted_earnings += value
 
 #calculate the growth rate
-growth = ((total_predicted_earnings_per_company / total_earnings) -1 ) * 100
+growth = ((total_predicted_earnings / total_earnings) -1 ) * 100
 
 #calculate the price/earnings/growth 
 peg = price_per_earnings / growth
@@ -140,14 +143,14 @@ ben_graham_number = (total_earnings * (8.5 + 2 * growth) * 4.4 ) / treasury_yiel
 if (ben_graham_number > total_market_cap):
     print("Invest today!")
     print("Today's price per earnings: " + str(price_per_earnings))
-    print("Predicted price per earnings: " + str(total_predicted_earnings_per_company))
+    print("Predicted price per earnings: " + str(total_predicted_earnings))
     print("Growth rate: " + str(growth))
     print("PEG: " + str(peg))
 #state it isn't profitable to invest today if ben graham is less than market capitalization
 else:
     print("Investment today is not worth it")
     print("Today's price per earnings: " + str(price_per_earnings))
-    print("Predicted price per earnings: " + str(total_predicted_earnings_per_company))
+    print("Predicted price per earnings: " + str(total_predicted_earnings))
     print("Growth rate: " + str(growth))
     print("PEG: " + str(peg))
 
